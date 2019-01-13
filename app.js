@@ -23,11 +23,20 @@ const posts = [
 
 // getPosts();
 
-function createPost(post, callback) {
+function createPost(post) {
+  return new Promise(function(resolve, reject) {
   setTimeout(function() {
     posts.push(post);
-    callback();
+
+    const error = false;
+
+    if (!error) {
+      resolve();
+    } else {
+      reject('Error: Something went wrong.');
+    }
   }, 2000)
+  });
 }
 
 function getPosts() {
@@ -40,6 +49,11 @@ function getPosts() {
   }, 1000)
 }
 
-createPost({title: 'Post Three', body: 'This is post three'}, getPosts);
-
+createPost({title: 'Post Three', body: 'This is post three'})
+.then(getPosts)
+.catch(function(err) {
+  console.log(err);
+});
 // A callback is just a function that can be passed into another function and then be called in that function
+// A promise is alternative to callbacks, an alternative way to handle async operations
+// They are called promises because whilst doing async operations, they can also do something when that operation is finished
